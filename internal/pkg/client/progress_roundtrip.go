@@ -61,8 +61,8 @@ func (t *RoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	resp, err := t.inner.RoundTrip(req)
 	if resp != nil && resp.Body != nil && resp.ContentLength >= contentSizeThreshold {
 		bar := t.p.AddBar(resp.ContentLength, defaultOption...)
-		t.bars = append(t.bars, bar)
 		t.sizes = append(t.sizes, resp.ContentLength)
+		t.bars = append(t.bars, bar)
 		resp.Body = bar.ProxyReader(resp.Body)
 	}
 	return resp, err
